@@ -1,0 +1,65 @@
+<div class="controls">
+  <div class="col-12 col-md-3 mb-2 mb-md-0">
+    <input class="form-control" type="text" [(ngModel)]="searchText" placeholder="Enter search keywords">
+    <button mat-raised-button class="searchButton" color="primary" (click)="search()">Search</button>
+    <button mat-raised-button class="searchButton" color="primary" (click)="clear()">Clear</button>
+  </div>
+
+  <div class="col-12 col-md-2 mb-2 mb-md-0">
+    <label for="sortSelect">Sort By: </label>
+    <select class="form-control" id="sortSelect" [(ngModel)]="sortCriteria" (change)="onSortChange()">
+      <option value="" >Select Sorting Option</option>
+      <option value="name ASC">Name (A-Z)</option>
+      <option value="name DESC">Name (Z-A)</option>
+      <option value="dateLastEdited ASC">Date Edited (Old-New)</option>
+      <option value="dateLastEdited DESC">Date Edited (New-Old)</option>
+    </select>
+  </div>
+</div>
+
+<div class="container responsive-grid">
+  <mat-card class="card" flex="25" *ngFor="let item of filteredItems">
+    <br />
+    <img mat-card-image src= {{item.image}}/>
+    <mat-card-title>{{ item.name }} </mat-card-title>
+    <mat-card-content>
+      <br />
+      <p id="item-description">{{item.description}}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<mat-paginator #paginator 
+  [length]="filteredItems.length" 
+  [pageSize]="10" 
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  showFirstLastButtons>
+</mat-paginator>
+
+<br><hr>
+
+<div class="container-new">
+  <div class="responsive-table">
+    <p id="table-text"><b>The below table contains all the records that satisfy the Search and Sort criteria:</b></p>
+    <table class="table table-hover">
+      <thead class="thead">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of filteredItems; let i=index;">
+            <tr *ngIf="i+1">
+                <ng-container>
+                  <th scope="row">{{i+1}}</th>
+                    <td>{{item.name}}</td>
+                    <td id="td-desc">{{item.description}}</td>
+                </ng-container>
+            </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
